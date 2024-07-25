@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Snippet</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Create a New Snippet</h1>
+    <form id="snippetForm">
+        <textarea name="text" rows="10" cols="30" placeholder="Enter your text here" required></textarea><br>
+        <input type="text" name="password" placeholder="Enter key (optional)"><br>
+        <input type="submit" value="Create Snippet">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#snippetForm').on('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting the traditional way
+
+                $.ajax({
+                    url: '/create',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // Display the URL
+                        $('#result').html('<p>Snippet created! <a href="' + response.url + '" target="_blank">' + response.url + '</a></p>');
+                    },
+                    error: function() {
+                        $('#result').html('<p>An error occurred while creating the snippet. Please try again.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
